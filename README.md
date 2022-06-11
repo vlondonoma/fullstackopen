@@ -1,5 +1,5 @@
 # Full Stack Open
-Solution of exercises proposed by Full Stack Open 2022
+Solution of exercises proposed by course [Full Stack Open](https://fullstackopen.com/es) - 2022
 
 ## Part 0
 - [0.4](part0/0.4)
@@ -10,3 +10,7 @@ Solution of exercises proposed by Full Stack Open 2022
 - [courseinfo](part1/courseinfo)
 - [unicafe](part1/unicafe)
 - [anecdotes](part1/anecdotes)
+
+## Part 2
+- [courseinfo](part2/courseinfo)
+- [phonebook](part2/phonebook)
