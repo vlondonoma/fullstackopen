@@ -14,3 +14,4 @@ Solution of exercises proposed by course [Full Stack Open](https://fullstackopen
 ## Part 2
 - [courseinfo](part2/courseinfo)
 - [phonebook](part2/phonebook)
+- [countries](part2/countries)
