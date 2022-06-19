@@ -1,17 +1,17 @@
 import React from "react";
-import Country from "./Country";
+import CountryDetails from "./CountryDetails";
+import CountryRow from "./CountryRow";
 
-const Countries = ({countries}) => {
+const Countries = ({countries,handleShowCountry}) => {
     if(countries.length===0){
         return <p>None results</p>
     }else if(countries.length===1){
-        return <Country country={countries[0]}></Country>
+        return <CountryDetails country={countries[0]}/>
     }else if( countries.length>10){
         return <p>Too many matches, specify another filter</p>;
     }else{
         return countries.map(
-            country => 
-            <p key={country.ccn3}>{country.name.common}</p>
+            country => <CountryRow country={country} handleShowCountry={handleShowCountry}/>            
         ) 
     } 
 }

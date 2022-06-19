@@ -8,7 +8,6 @@ const App = () => {
   const [ newFilter, setNewFilter ] = useState('')
 
   useEffect(() => {
-    console.log('effect')
     axios
       .get('https://restcountries.com/v3.1/all')
       .then(response => {
@@ -22,6 +21,11 @@ const App = () => {
 
   const regFilter = new RegExp(newFilter, 'i')
 
+  const handleShowCountry = (event) => {
+    event.preventDefault();
+    setNewFilter(event.target.value)
+  }
+
   return (
     <div>
         <h1>Countries</h1>
@@ -30,7 +34,8 @@ const App = () => {
         <Countries countries={
             newFilter? 
                 countries.filter(country => regFilter.test(country.name.common))
-                : countries}/>
+                : countries}
+            handleShowCountry={handleShowCountry}/>
     </div>
   )
 }
