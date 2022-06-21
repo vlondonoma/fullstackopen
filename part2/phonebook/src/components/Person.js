@@ -1,5 +1,8 @@
 import React from "react";
 
-const Person = ({person}) => <p>{person.name} {person.number}</p>
+const Person = ({person,handleDelete}) => 
+<>
+    <p>{person.name} {person.number} <button value={person.id} onClick={handleDelete}>Delete</button></p>
+</>
 
 export default Person
