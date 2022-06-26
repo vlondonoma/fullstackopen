@@ -15,3 +15,6 @@ Solution of exercises proposed by course [Full Stack Open](https://fullstackopen
 - [courseinfo](part2/courseinfo)
 - [phonebook](part2/phonebook)
 - [countries](part2/countries)
+
+## Part 3
+- [phonebook](part3/phonebook)
