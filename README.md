@@ -18,3 +18,4 @@ Solution of exercises proposed by course [Full Stack Open](https://fullstackopen
 
 ## Part 3
 - [phonebook](part3/phonebook)
+- [phonebook in Heroku](https://phonebook-vlondono.herokuapp.com/)
