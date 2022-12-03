@@ -6,11 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf build && cd ../phonebook_front && npm run build --prod && cp -r build ../phonebook/",
-    "deploy": "cd ../../ git subtree push --prefix part3/phonebook/ heroku main",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Valentina Londoño Marin",
   "license": "ISC",
