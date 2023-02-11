@@ -52,7 +52,11 @@ const App = () => {
                 showMessage('success',personObject.name+" was successfully created")
             })
             .catch(error => {
-                showMessage('error',personObject.name+" has already been removed from server")
+                let message = "There was an error";
+                if (error.response) {
+                    message = error.response.data.error;
+                }
+                showMessage('error', message);
             })
     }
   }
