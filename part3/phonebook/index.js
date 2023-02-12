@@ -72,13 +72,9 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
     const body = request.body
-    if (!body.number) {
-      return response.status(400).json({ 
-        error: 'Number missing' 
-      })
-    }
-  
-    Person.findByIdAndUpdate(request.params.id,{number:body.number},{new:true})
+    const opc = { new: true, runValidators: true, context: 'query'};
+
+    Person.findByIdAndUpdate(request.params.id, {number:body.number}, opc)
         .then(savedPerson => {
             response.json(savedPerson)
         })
