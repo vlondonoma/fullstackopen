@@ -74,7 +74,11 @@ const App = () => {
                 showMessage('success',person.name+" was successfully updated")
             })
             .catch(error => {
-                showMessage('error',person.name+" has already been removed from server")
+                let message = "There was an error";
+                if (error.response) {
+                    message = error.response.data.error;
+                }
+                showMessage('error', message);
             })
     }
   }
@@ -99,7 +103,11 @@ const App = () => {
             setPersons(persons.filter(person => person.id !== id))
         })
         .catch(error => {
-            showMessage('error',person.name+" has already been removed from server")
+            let message = "There was an error";
+            if (error.response) {
+                message = error.response.data.error;
+            }
+            showMessage('error', message);
         })
     }
   }
