@@ -8,7 +8,8 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../phonebook_front && npm run build --prod && cp -r build ../phonebook/",
-    "deploy": "npm run build:ui && git add . && git commit -m uibuild"
+    "deploy": "npm run build:ui && git add . && git commit -m uibuild",
+    "lint": "eslint ."
   },
   "author": "Valentina Londoño Marin",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "node-uuid": "^1.4.8"
   },
   "devDependencies": {
+    "eslint": "^8.34.0",
     "nodemon": "^2.0.18"
   }
 }
