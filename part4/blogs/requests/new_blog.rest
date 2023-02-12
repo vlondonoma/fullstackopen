@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs/ HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Coalición por el evangelio",
+    "author": "Oto Sanchez",
+    "url": "www.coalicionporelevangelio.com",
+    "likes": 5
+}
