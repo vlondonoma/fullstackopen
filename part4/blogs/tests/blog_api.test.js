@@ -5,6 +5,13 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+var token = ''
+
+beforeAll(async () => {
+  const userRoot = { username: 'root', password: 'sekret' }
+  const responseLogin = await api.post('/api/login').send(userRoot)
+  token = responseLogin.body.token
+},30000)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -46,6 +53,7 @@ describe('test on blog post:', () => {
 
     await api
       .post('/api/blogs')
+      .set('authorization', 'bearer ' + token)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -66,6 +74,7 @@ describe('test on blog post:', () => {
 
     await api
       .post('/api/blogs')
+      .set('authorization', 'bearer ' + token)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -89,11 +98,13 @@ describe('test on blog post:', () => {
 
     await api
       .post('/api/blogs')
+      .set('authorization', 'bearer ' + token)
       .send(withoutTitle)
       .expect(400)
 
     await api
       .post('/api/blogs')
+      .set('authorization', 'bearer ' + token)
       .send(withoutAuthor)
       .expect(400)
   })
@@ -102,17 +113,29 @@ describe('test on blog post:', () => {
 describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+
+    const newBlog = {
+      title: 'My new blog',
+      author: 'me',
+      url: 'https://myblog.org/',
+      likes: 100,
+    }
+
+    const postResponse = await api
+      .post('/api/blogs')
+      .set('authorization', 'bearer ' + token)
+      .send(newBlog)
+
+    const blogToDelete = postResponse.body
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('authorization', 'bearer ' + token)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
 
-    expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
-    )
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
 
     const titles = blogsAtEnd.map(r => r.titles)
     expect(titles).not.toContain(blogToDelete.title)
@@ -121,8 +144,19 @@ describe('deletion of a blog', () => {
 
 describe('update of a blog', () => {
   test('succeeds with status code 200 if id is valid', async () => {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToUpdate = blogsAtStart[0]
+    const newBlog = {
+      title: 'My new blog',
+      author: 'me',
+      url: 'https://myblog.org/',
+      likes: 100,
+    }
+
+    const postResponse = await api
+      .post('/api/blogs')
+      .set('authorization', 'bearer ' + token)
+      .send(newBlog)
+
+    const blogToUpdate = postResponse.body
     const newLikes = blogToUpdate.likes + 1
 
     const likeInfo = {
@@ -131,11 +165,13 @@ describe('update of a blog', () => {
 
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
+      .set('authorization', 'bearer ' + token)
       .send(likeInfo)
       .expect(200)
 
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd[0].likes).toBe(newLikes)
+    const finalLength = blogsAtEnd.length-1
+    expect(blogsAtEnd[finalLength].likes).toBe(newLikes)
   })
 })
 
