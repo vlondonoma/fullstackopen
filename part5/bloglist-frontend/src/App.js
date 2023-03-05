@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import CreateForm from './components/CreateForm'
 import Logout from './components/Logout'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -16,6 +16,11 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [newBlog, setNewBlog] = useState({
+    title: null,
+    author: null,
+    url: null,
+  })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -48,7 +53,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      showMessage('danger','Wrong credentials')
+      showMessage('danger','Wrong username or password')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -67,8 +72,25 @@ const App = () => {
       }, 5000)
   }
 
+  const createNewBlog = async (newBlog) => {
+    try {
+      const response = await blogService.create(newBlog)
+      const newBlogs = await blogService.getAll()
+      setBlogs(newBlogs)
+      setNewBlog({
+        title: null,
+        author: null,
+        url: null,
+      })
+      showMessage('success',`a new blog ${response.title} by ${response.author} added`)
+    } catch (error) {
+      showMessage('danger',error.message)
+    }
+  }
+
   return (
     <Container>
+      <h1>Blogs App</h1>
       <Notification message={message} />
       {!user ? (
         <LoginForm
@@ -84,10 +106,12 @@ const App = () => {
           username = {user.name}
           handleLogout={handleLogout} 
         />
-        <h2>blogs</h2>
+        <ul>
         {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <li><Blog key={blog.id} blog={blog} /></li>
         )}
+        </ul>
+        <CreateForm newBlog={newBlog} setNewBlog={setNewBlog} createNewBlog={createNewBlog} />
       </div>
     )}
     </Container>
