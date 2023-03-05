@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Logout from './components/Logout'
@@ -8,7 +12,7 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -44,9 +48,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      showMessage('danger','Wrong credentials')
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(null)
       }, 5000)
     }
   }
@@ -56,9 +60,16 @@ const App = () => {
     setUser(null)
   }
 
+  const showMessage = (type, message) => {
+    setMessage({'type':type,'text':message})
+    setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+  }
+
   return (
-    <div>
-      <Notification message={errorMessage} />
+    <Container>
+      <Notification message={message} />
       {!user ? (
         <LoginForm
           username={username}
@@ -73,14 +84,13 @@ const App = () => {
           username = {user.name}
           handleLogout={handleLogout} 
         />
-        <p>Aqui estará el form</p>
         <h2>blogs</h2>
         {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
         )}
       </div>
     )}
-    </div>
+    </Container>
   )
 }
 
