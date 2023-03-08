@@ -18,7 +18,7 @@ const CreateForm = ({
     <div>
       <h2>Create new Blog</h2>
       <Form onSubmit={handleNewBlog}>
-        <Form.Group className="mb-3" controlId="loginFormTitle">
+        <Form.Group className="mb-3">
           <Form.Label>title</Form.Label>
           <Form.Control
             type="text"
@@ -29,7 +29,7 @@ const CreateForm = ({
             }
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="loginFormAuthor">
+        <Form.Group className="mb-3">
           <Form.Label>author</Form.Label>
           <Form.Control
             type="text"
@@ -40,7 +40,7 @@ const CreateForm = ({
             }
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="loginFormUrl">
+        <Form.Group className="mb-3">
           <Form.Label>url</Form.Label>
           <Form.Control
             type="url"

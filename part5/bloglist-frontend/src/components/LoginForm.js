@@ -13,7 +13,7 @@ const LoginForm = ({
     <div>
       <h2>Login to application</h2>
       <Form onSubmit={handleLogin}>
-        <Form.Group className="mb-3" controlId="loginFormUsername">
+        <Form.Group className="mb-3">
           <Form.Label>username</Form.Label>
           <Form.Control
             type="text"
@@ -23,7 +23,7 @@ const LoginForm = ({
             onChange={({ target }) => setUsername(target.value)}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="loginFormPassword">
+        <Form.Group className="mb-3">
           <Form.Label>password</Form.Label>
           <Form.Control
             type="password"

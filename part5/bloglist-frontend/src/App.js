@@ -9,6 +9,7 @@ import Logout from './components/Logout'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -106,12 +107,12 @@ const App = () => {
           username = {user.name}
           handleLogout={handleLogout} 
         />
-        <ul>
         {blogs.map(blog =>
-            <li><Blog key={blog.id} blog={blog} /></li>
+            <Blog key={blog.id} blog={blog} />
         )}
-        </ul>
-        <CreateForm newBlog={newBlog} setNewBlog={setNewBlog} createNewBlog={createNewBlog} />
+        <Togglable buttonLabel="new blog">
+            <CreateForm newBlog={newBlog} setNewBlog={setNewBlog} createNewBlog={createNewBlog} />
+        </Togglable>
       </div>
     )}
     </Container>
