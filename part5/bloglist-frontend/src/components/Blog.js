@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, likesUpdate, removeBlog }) => {
 
   const [visible, setVisible] = useState(false)
 
@@ -9,6 +9,23 @@ const Blog = ({ blog }) => {
 
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const handleLike = () => {
+    const blogObj = {
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        likes: blog.likes + 1,
+        user: blog.user
+    }
+    likesUpdate(blog.id, blogObj)
+  }
+
+  const handleRemove = () => {
+    if (window.confirm(`Remove blog ${blog.tile} by ${blog.author}?`) === true) {
+        removeBlog(blog.id)
+    }
   }
 
   const blogStyle = {
@@ -26,11 +43,11 @@ const Blog = ({ blog }) => {
         <div style={showWhenVisible}>
           {blog.url}
           <br/>
-          Likes {blog.likes} <Button variant="secondary" size="sm"> like </Button>
+          Likes {blog.likes} <Button variant="secondary" size="sm" onClick={handleLike}> like </Button>
           <br/>
           {blog.user !== undefined && blog.user.name}
           <br/>
-          <Button variant="danger" size="sm"> remove </Button>
+          <Button variant="danger" size="sm" onClick={handleRemove}> remove </Button>
         </div>
       </div>
   </div>

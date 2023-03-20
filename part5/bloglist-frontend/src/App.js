@@ -22,12 +22,14 @@ const App = () => {
     author: null,
     url: null,
   })
+  const [refreshBlogs, setRefreshBlogs] = useState(false)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
-  }, [])
+    blogService.getAll().then(blogs => {
+        blogs.sort((a, b) => b.likes - a.likes)
+        setBlogs(blogs)
+    })
+  }, [refreshBlogs])
 
    useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -76,14 +78,33 @@ const App = () => {
   const createNewBlog = async (newBlog) => {
     try {
       const response = await blogService.create(newBlog)
-      const newBlogs = await blogService.getAll()
-      setBlogs(newBlogs)
+      setRefreshBlogs(!refreshBlogs)
       setNewBlog({
         title: null,
         author: null,
         url: null,
       })
       showMessage('success',`a new blog ${response.title} by ${response.author} added`)
+    } catch (error) {
+      showMessage('danger',error.message)
+    }
+  }
+
+  const likesUpdate = async (id, blogObject) => {
+    try {
+      await blogService.update(id, blogObject)
+      setRefreshBlogs(!refreshBlogs)
+      showMessage('success',`Successfully like added`)
+    } catch (error) {
+      showMessage('danger',error.message)
+    }
+  }
+
+  const removeBlog = async id => {
+    try {
+      await blogService.remove(id)
+      setRefreshBlogs(!refreshBlogs)
+      showMessage('success',`The blog was successfully deleted`)
     } catch (error) {
       showMessage('danger',error.message)
     }
@@ -108,7 +129,12 @@ const App = () => {
           handleLogout={handleLogout} 
         />
         {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog 
+                key={blog.id}
+                blog={blog}
+                likesUpdate = {likesUpdate}
+                removeBlog = {removeBlog}
+            />
         )}
         <Togglable buttonLabel="new blog">
             <CreateForm newBlog={newBlog} setNewBlog={setNewBlog} createNewBlog={createNewBlog} />
