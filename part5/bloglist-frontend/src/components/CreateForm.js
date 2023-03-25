@@ -1,11 +1,11 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 const CreateForm = ({
-    newBlog,
-    setNewBlog,
-    createNewBlog,
+  newBlog,
+  setNewBlog,
+  createNewBlog,
 }) => {
 
   const handleNewBlog = async (event) => {

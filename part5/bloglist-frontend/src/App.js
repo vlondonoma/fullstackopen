@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Container from 'react-bootstrap/Container';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Container from 'react-bootstrap/Container'
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
@@ -26,12 +26,12 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
-        blogs.sort((a, b) => b.likes - a.likes)
-        setBlogs(blogs)
+      blogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(blogs)
     })
   }, [refreshBlogs])
 
-   useEffect(() => {
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -42,7 +42,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -50,7 +50,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -69,10 +69,10 @@ const App = () => {
   }
 
   const showMessage = (type, message) => {
-    setMessage({'type':type,'text':message})
+    setMessage({ 'type':type,'text':message })
     setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      setMessage(null)
+    }, 5000)
   }
 
   const createNewBlog = async (newBlog) => {
@@ -94,7 +94,7 @@ const App = () => {
     try {
       await blogService.update(id, blogObject)
       setRefreshBlogs(!refreshBlogs)
-      showMessage('success',`Successfully like added`)
+      showMessage('success','Successfully like added')
     } catch (error) {
       showMessage('danger',error.message)
     }
@@ -104,7 +104,7 @@ const App = () => {
     try {
       await blogService.remove(id)
       setRefreshBlogs(!refreshBlogs)
-      showMessage('success',`The blog was successfully deleted`)
+      showMessage('success','The blog was successfully deleted')
     } catch (error) {
       showMessage('danger',error.message)
     }
@@ -122,25 +122,25 @@ const App = () => {
           setPassword={setPassword}
           handleLogin={handleLogin}
         />
-      ) : ( 
-      <div>
-        <Logout
-          username = {user.name}
-          handleLogout={handleLogout} 
-        />
-        {blogs.map(blog =>
-            <Blog 
-                key={blog.id}
-                blog={blog}
-                likesUpdate = {likesUpdate}
-                removeBlog = {removeBlog}
+      ) : (
+        <div>
+          <Logout
+            username = {user.name}
+            handleLogout={handleLogout}
+          />
+          {blogs.map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              likesUpdate = {likesUpdate}
+              removeBlog = {removeBlog}
             />
-        )}
-        <Togglable buttonLabel="new blog">
+          )}
+          <Togglable buttonLabel="new blog">
             <CreateForm newBlog={newBlog} setNewBlog={setNewBlog} createNewBlog={createNewBlog} />
-        </Togglable>
-      </div>
-    )}
+          </Togglable>
+        </div>
+      )}
     </Container>
   )
 }

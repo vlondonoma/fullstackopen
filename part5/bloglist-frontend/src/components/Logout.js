@@ -1,7 +1,7 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button'
 
-const Logout = ({username, handleLogout}) => {
+const Logout = ({ username, handleLogout }) => {
   return (
     <div>
       <p>

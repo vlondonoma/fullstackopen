@@ -1,7 +1,7 @@
 
 
 import { useState } from 'react'
-import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button'
 
 const Togglable = (props) => {
   const [visible, setVisible] = useState(false)

@@ -1,13 +1,14 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import PropTypes from 'prop-types'
 
 const LoginForm = ({
-    username,
-    password,
-    setUsername,
-    setPassword,
-    handleLogin,
+  username,
+  password,
+  setUsername,
+  setPassword,
+  handleLogin,
 }) => {
   return (
     <div>
@@ -37,6 +38,14 @@ const LoginForm = ({
       </Form>
     </div>
   )
+}
+
+LoginForm.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  setUsername: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
 }
 
 export default LoginForm

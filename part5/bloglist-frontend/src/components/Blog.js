@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button'
 
 const Blog = ({ blog, likesUpdate, removeBlog }) => {
 
@@ -13,18 +13,18 @@ const Blog = ({ blog, likesUpdate, removeBlog }) => {
 
   const handleLike = () => {
     const blogObj = {
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
-        likes: blog.likes + 1,
-        user: blog.user
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user
     }
     likesUpdate(blog.id, blogObj)
   }
 
   const handleRemove = () => {
     if (window.confirm(`Remove blog ${blog.tile} by ${blog.author}?`) === true) {
-        removeBlog(blog.id)
+      removeBlog(blog.id)
     }
   }
 
@@ -50,7 +50,7 @@ const Blog = ({ blog, likesUpdate, removeBlog }) => {
           <Button variant="danger" size="sm" onClick={handleRemove}> remove </Button>
         </div>
       </div>
-  </div>
-)}
+    </div>
+  )}
 
 export default Blog
