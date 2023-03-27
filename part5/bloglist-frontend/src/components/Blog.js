@@ -39,11 +39,11 @@ const Blog = ({ blog, likesUpdate, removeBlog }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author} <Button variant="warning" size="sm" onClick={toggleVisibility}>{visible ? 'Hide' : 'View'}</Button>
-        <div style={showWhenVisible}>
+        {blog.title} {blog.author} <Button className="showButton" variant="warning" size="sm" onClick={toggleVisibility}>{visible ? 'Hide' : 'View'}</Button>
+        <div className="detailInfo" style={showWhenVisible}>
           {blog.url}
           <br/>
-          Likes {blog.likes} <Button variant="secondary" size="sm" onClick={handleLike}> like </Button>
+          Likes {blog.likes} <Button className="likeButton" variant="secondary" size="sm" onClick={handleLike}> like </Button>
           <br/>
           {blog.user !== undefined && blog.user.name}
           <br/>
