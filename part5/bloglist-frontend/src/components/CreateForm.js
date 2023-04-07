@@ -51,7 +51,7 @@ const CreateForm = ({
             }
           />
         </Form.Group>
-        <Button variant="primary" type="submit">create</Button>
+        <Button className="createButton" variant="primary" type="submit">create</Button>
       </Form>
     </div>
   )
