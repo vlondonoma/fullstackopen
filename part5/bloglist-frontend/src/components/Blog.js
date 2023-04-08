@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 
-const Blog = ({ blog, likesUpdate, removeBlog }) => {
+const Blog = ({ blog, likesUpdate, removeBlog, user }) => {
 
   const [visible, setVisible] = useState(false)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
+
+  const showWhenCreatorUser = { display: blog.user.username === user.username ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -37,7 +39,7 @@ const Blog = ({ blog, likesUpdate, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div>
         {blog.title} {blog.author} <Button className="showButton" variant="warning" size="sm" onClick={toggleVisibility}>{visible ? 'Hide' : 'View'}</Button>
         <div className="detailInfo" style={showWhenVisible}>
@@ -45,9 +47,8 @@ const Blog = ({ blog, likesUpdate, removeBlog }) => {
           <br/>
           Likes {blog.likes} <Button className="likeButton" variant="secondary" size="sm" onClick={handleLike}> like </Button>
           <br/>
-          {blog.user !== undefined && blog.user.name}
           <br/>
-          <Button variant="danger" size="sm" onClick={handleRemove}> remove </Button>
+          <Button style={showWhenCreatorUser} variant="danger" size="sm" onClick={handleRemove}> remove </Button>
         </div>
       </div>
     </div>

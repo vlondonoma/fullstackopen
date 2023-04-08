@@ -134,9 +134,10 @@ const App = () => {
               blog={blog}
               likesUpdate = {likesUpdate}
               removeBlog = {removeBlog}
+              user={user}
             />
           )}
-          <Togglable buttonLabel="new blog">
+          <Togglable buttonId="create" buttonLabel="new blog">
             <CreateForm newBlog={newBlog} setNewBlog={setNewBlog} createNewBlog={createNewBlog} />
           </Togglable>
         </div>
