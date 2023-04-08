@@ -84,7 +84,7 @@ describe('Blog app', function() {
       cy.contains('A third blog created by cypress').should('not.exist')
     })
 
-    it('A blog cant be deleted only but his owner', () => {
+    it('A blog cant be deleted only but his owner', () => { //5.22
       cy.createBlog({
         title: 'A fourth blog created by cypress',
         author: 'Cypress',
