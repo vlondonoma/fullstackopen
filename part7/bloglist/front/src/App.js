@@ -11,6 +11,9 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
+import { useDispatch } from 'react-redux'
+import { showTemporalMessage } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
@@ -23,6 +26,7 @@ const App = () => {
     url: null,
   })
   const [refreshBlogs, setRefreshBlogs] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -69,10 +73,7 @@ const App = () => {
   }
 
   const showMessage = (type, message) => {
-    setMessage({ 'type':type,'text':message })
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
+    dispatch(showTemporalMessage({ 'type':type, 'text':message }))
   }
 
   const createNewBlog = async (newBlog) => {
