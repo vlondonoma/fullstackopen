@@ -1,21 +1,46 @@
-import React from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 
-const LoginForm = ({
-  username,
-  password,
-  setUsername,
-  setPassword,
-  handleLogin,
-}) => {
+import { useDispatch } from 'react-redux'
+import { setUser } from '../reducers/userReducer'
+import { showTemporalMessage } from '../reducers/notificationReducer'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
+
+const LoginForm = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const dispatch = useDispatch()
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+
+    try {
+      const user = await loginService.login({
+        username, password,
+      })
+
+      window.localStorage.setItem(
+        'loggedBlogAppUser', JSON.stringify(user)
+      )
+      blogService.setToken(user.token)
+      dispatch(setUser(user))
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      dispatch(showTemporalMessage({ 'type':'danger', 'text':'Wrong username or password' }))
+    }
+  }
+
   return (
     <div>
       <h2>Login to application</h2>
       <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3">
-          <Form.Label>username</Form.Label>
+          <Form.Label>username (vlondono)</Form.Label>
           <Form.Control
             type="text"
             id="username"
@@ -25,7 +50,7 @@ const LoginForm = ({
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>password</Form.Label>
+          <Form.Label>password (123456)</Form.Label>
           <Form.Control
             type="password"
             id="password"
