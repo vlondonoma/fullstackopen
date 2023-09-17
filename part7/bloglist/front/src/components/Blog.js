@@ -1,16 +1,21 @@
-import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 
-const Blog = ({ blog, likesUpdate, removeBlog, user }) => {
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { showTemporalMessage } from '../reducers/notificationReducer'
+import { updateBlogAction } from '../reducers/blogReducer'
 
-  const [visible, setVisible] = useState(false)
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch()
+  const [ likes, setLikes ] = useState(blog.likes)
 
-  const showWhenVisible = { display: visible ? '' : 'none' }
-
-  const showWhenCreatorUser = { display: blog.user.username === user.username ? '' : 'none' }
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
+  const likesUpdate = async (id, blogObject) => {
+    try {
+      dispatch(updateBlogAction(id, blogObject))
+      dispatch(showTemporalMessage({ 'type': 'success','text': 'Successfully like added' }))
+    } catch (error) {
+      dispatch(showTemporalMessage({ 'type': 'danger','text': error.message }))
+    }
   }
 
   const handleLike = () => {
@@ -22,35 +27,18 @@ const Blog = ({ blog, likesUpdate, removeBlog, user }) => {
       user: blog.user
     }
     likesUpdate(blog.id, blogObj)
-  }
-
-  const handleRemove = () => {
-    if (window.confirm(`Remove blog ${blog.tile} by ${blog.author}?`) === true) {
-      removeBlog(blog.id)
-    }
-  }
-
-  const blogStyle = {
-    padding: 10,
-    border: 'solid',
-    borderColor: '#6c757d',
-    borderWidth: 1,
-    marginBottom: 5
+    setLikes(blogObj.likes)
   }
 
   return (
-    <div style={blogStyle} className="blog">
-      <div>
-        {blog.title} {blog.author} <Button className="showButton" variant="warning" size="sm" onClick={toggleVisibility}>{visible ? 'Hide' : 'View'}</Button>
-        <div className="detailInfo" style={showWhenVisible}>
-          {blog.url}
-          <br/>
-          Likes {blog.likes} <Button className="likeButton" variant="secondary" size="sm" onClick={handleLike}> like </Button>
-          <br/>
-          <br/>
-          <Button style={showWhenCreatorUser} variant="danger" size="sm" onClick={handleRemove}> remove </Button>
-        </div>
-      </div>
+    <div>
+      <h3>{blog.title}</h3>
+      <a href={blog.url}>{blog.url}</a>
+      <br/>
+      added by {blog.author}
+      <br/>
+      Likes {likes} <Button className="likeButton" variant="secondary" size="sm" onClick={handleLike}> like </Button>
+      <br/>
     </div>
   )}
 

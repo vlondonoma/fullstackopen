@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Container from 'react-bootstrap/Container'
 
 import Bloglist from './components/Bloglist'
+import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Logout from './components/Logout'
 import blogService from './services/blogs'
@@ -12,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 
-import { Routes, Route, Link, Navigate } from 'react-router-dom'
+import { Routes, Route, Link, Navigate, useMatch } from 'react-router-dom'
 
 
 const App = () => {
@@ -21,13 +22,17 @@ const App = () => {
 
   const dispatch = useDispatch()
 
+  const matchBlog = useMatch('/blogs/:id')
+  const blog = matchBlog
+    ? blogs.find((blog) => blog.id === matchBlog.params.id)
+    : null
+
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    console.log(loggedUserJSON)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       dispatch(setUser(user))
@@ -60,6 +65,7 @@ const App = () => {
       <Notification />
       <Routes>
         <Route path="/" element={<Bloglist blogs={blogs} />} />
+        <Route path="/blogs/:id" element={<Blog blog={blog} />} />
         <Route
           path="/login/"
           element={user ? <Navigate replace to="/" /> : <LoginForm />}

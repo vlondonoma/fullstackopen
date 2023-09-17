@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
-import Blog from './Blog'
 import CreateForm from './CreateForm'
 import Togglable from './Togglable'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { showTemporalMessage } from '../reducers/notificationReducer'
-import { createBlogAction, updateBlogAction, deleteBlogAction } from '../reducers/blogReducer'
+import { createBlogAction } from '../reducers/blogReducer'
+import { Link } from 'react-router-dom'
+
+import Table from 'react-bootstrap/Table'
 
 const Bloglist = ({ blogs }) => {
 
@@ -39,24 +40,6 @@ const Bloglist = ({ blogs }) => {
     }
   }
 
-  const likesUpdate = async (id, blogObject) => {
-    try {
-      dispatch(updateBlogAction(id, blogObject))
-      showMessage('success','Successfully like added')
-    } catch (error) {
-      showMessage('danger',error.message)
-    }
-  }
-
-  const removeBlog = async id => {
-    try {
-      dispatch(deleteBlogAction(id))
-      showMessage('success','The blog was successfully deleted')
-    } catch (error) {
-      showMessage('danger',error.message)
-    }
-  }
-
   return (
     <div>
       {!user ? (
@@ -66,15 +49,17 @@ const Bloglist = ({ blogs }) => {
           <Togglable buttonId="create" buttonLabel="new blog">
             <CreateForm newBlog={newBlog} setNewBlog={setNewBlog} createNewBlog={createNewBlog} />
           </Togglable>
-          {blogs.map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              likesUpdate = {likesUpdate}
-              removeBlog = {removeBlog}
-              user={user}
-            />
-          )}
+          <br/>
+          <h4>Blogs registered by {user.name}</h4>
+          <Table striped bordered hover>
+            <tbody>
+              {blogs.map(blog =>
+                <tr key={blog.id}>
+                  <td><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
         </div>
       )}
     </div>
