@@ -11,35 +11,36 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showTemporalMessage } from './reducers/notificationReducer'
+import { initializeBlogs, createBlogAction, updateBlogAction, deleteBlogAction } from './reducers/blogReducer'
+import { setUser } from './reducers/userReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [message, setMessage] = useState(null)
+  const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
   const [newBlog, setNewBlog] = useState({
     title: null,
     author: null,
     url: null,
   })
-  const [refreshBlogs, setRefreshBlogs] = useState(false)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then(blogs => {
-      blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(blogs)
-    })
-  }, [refreshBlogs])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    console.log(loggedUserJSON)
     if (loggedUserJSON) {
+      console.log('holi')
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
@@ -56,20 +57,17 @@ const App = () => {
         'loggedBlogAppUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
-      setUser(user)
+      dispatch(setUser(user))
       setUsername('')
       setPassword('')
     } catch (exception) {
       showMessage('danger','Wrong username or password')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
     }
   }
 
   const handleLogout = () => {
     window.localStorage.clear()
-    setUser(null)
+    dispatch(setUser(null))
   }
 
   const showMessage = (type, message) => {
@@ -78,14 +76,13 @@ const App = () => {
 
   const createNewBlog = async (newBlog) => {
     try {
-      const response = await blogService.create(newBlog)
-      setRefreshBlogs(!refreshBlogs)
+      dispatch(createBlogAction(newBlog))
       setNewBlog({
         title: null,
         author: null,
         url: null,
       })
-      showMessage('success',`a new blog ${response.title} by ${response.author} added`)
+      showMessage('success',`a new blog ${newBlog.title} by ${newBlog.author} added`)
     } catch (error) {
       showMessage('danger',error.message)
     }
@@ -93,8 +90,7 @@ const App = () => {
 
   const likesUpdate = async (id, blogObject) => {
     try {
-      await blogService.update(id, blogObject)
-      setRefreshBlogs(!refreshBlogs)
+      dispatch(updateBlogAction(id, blogObject))
       showMessage('success','Successfully like added')
     } catch (error) {
       showMessage('danger',error.message)
@@ -103,8 +99,7 @@ const App = () => {
 
   const removeBlog = async id => {
     try {
-      await blogService.remove(id)
-      setRefreshBlogs(!refreshBlogs)
+      dispatch(deleteBlogAction(id))
       showMessage('success','The blog was successfully deleted')
     } catch (error) {
       showMessage('danger',error.message)
@@ -114,7 +109,7 @@ const App = () => {
   return (
     <Container>
       <h1>Blogs App</h1>
-      <Notification message={message} />
+      <Notification />
       {!user ? (
         <LoginForm
           username={username}
