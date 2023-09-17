@@ -61,5 +61,12 @@ export const deleteBlogAction = (id) => {
   }
 }
 
-export const { setBlogs, appendBlog, updateBlog, deleteBlog } = blogSlice.actions
+export const commentBlogAction = (id, newComment) => {
+  return async (dispatch) => {
+    const updatedBlog = await blogsService.addComment(id, newComment)
+    dispatch(commentBlog(updatedBlog))
+  }
+}
+
+export const { setBlogs, appendBlog, updateBlog, deleteBlog, commentBlog } = blogSlice.actions
 export default blogSlice.reducer

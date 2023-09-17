@@ -39,5 +39,12 @@ const remove = async id => {
   return response.data
 }
 
+const addComment = async (id, newComment) => {
+  const response = await axios.post(baseUrl + '/' + id + '/comments', {
+    comment: newComment,
+  })
+  return response.data
+}
+
 // eslint-disable-next-line
-export default { getAll, create, update, remove, setToken}
+export default { getAll, create, update, remove, setToken, addComment}
