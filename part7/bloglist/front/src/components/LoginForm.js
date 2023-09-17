@@ -1,6 +1,5 @@
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import PropTypes from 'prop-types'
 import { useState } from 'react'
 
 import { useDispatch } from 'react-redux'
@@ -63,14 +62,6 @@ const LoginForm = () => {
       </Form>
     </div>
   )
-}
-
-LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
 }
 
 export default LoginForm
